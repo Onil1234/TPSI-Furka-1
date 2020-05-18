@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "CAR_MODEL")
+@Table(name = "car_model")
 public class CarModel implements Serializable  {
     
     @JoinColumn(name = "manufacturer_id", referencedColumnName = "id")
