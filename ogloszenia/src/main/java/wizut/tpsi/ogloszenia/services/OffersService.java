@@ -6,15 +6,18 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import wizut.tpsi.ogloszenia.jpa.BodyStyle;
 import wizut.tpsi.ogloszenia.jpa.CarManufacturer;
 import wizut.tpsi.ogloszenia.jpa.CarModel;
 import wizut.tpsi.ogloszenia.jpa.FuelType;
 import wizut.tpsi.ogloszenia.jpa.Offer;
+import wizut.tpsi.ogloszenia.jpa.OfferFilter;
 
 
 @Service
+@Transactional
 public class OffersService {
 
     @PersistenceContext
@@ -57,12 +60,11 @@ public class OffersService {
 }
     
     
-    public List<CarModel> getCarModels(int manufacturerId) {
-        String jpql = "select cm from CarModel cm where cm.manufacturer.id = :id order by cm.name";
+    public List<CarModel> getCarModels() {
+        String jpql = "select cm from CarModel cm order by cm.manufacturer.name";
 
         TypedQuery<CarModel> query = em.createQuery(jpql, CarModel.class);
-        query.setParameter("id", manufacturerId);
-
+ 
         return query.getResultList();
 }
     
@@ -87,7 +89,7 @@ public class OffersService {
     
     public List<Offer> getOffersByManufacturer(int manufacturerId){
     
-        String jpql = "select cm from Offer cm where cm.manufacturer.id = :id order by cm.name";
+        String jpql = "select cm from Offer cm where cm.model.manufacturer.id = :id order by cm.title";
 
         TypedQuery<Offer> query = em.createQuery(jpql, Offer.class);
         query.setParameter("id", manufacturerId);
@@ -97,9 +99,48 @@ public class OffersService {
     }
     
     
+    public List<CarModel> getCarModelsByManufacturer(int manufacturerId){
+        String jpql = "select cm from CarModel cm where cm.manufacturer.id = :id order by cm.name";
+
+        TypedQuery<CarModel> query = em.createQuery(jpql, CarModel.class);
+        query.setParameter("id", manufacturerId);
+        return query.getResultList();
+    }
+    
+    
     public Offer getOffer(int id) {
         return em.find(Offer.class, id);
     }
+    
+    
+
+
+    public Offer createOffer(Offer offer) {
+    em.persist(offer);
+    return offer;
+    }
+    
+    public List<Offer> getOffers (OfferFilter filter){
+        
+        String jpql = "select cm from Offer cm where cm.year >= :yearFrom and "
+                + "cm.year <= :yearTo and cm.fuelType.id = :fuelTypeId "
+                + " and cm.model.id = :model.id "
+                + "and cm.model.manufacturer.id = :manufacturer.id order by cm.name";
+
+        TypedQuery<Offer> query = em.createQuery(jpql, Offer.class);
+        query.setParameter("yearTo", filter.getYearTo());
+        query.setParameter("yearFrom", filter.getYearFrom());
+        query.setParameter("fuelTypeId", filter.getFuelTypeIdl());
+        
+        return query.getResultList();
+    }
+    
+    public Offer deleteOffer(Integer id) {
+        Offer offer = em.find(Offer.class, id);
+        em.remove(offer);
+        return offer;
+    }
+    
     
    
 }
