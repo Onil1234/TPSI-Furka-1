@@ -121,16 +121,31 @@ public class OffersService {
     }
     
     public List<Offer> getOffers (OfferFilter filter){
+        String jpql = "select cm from Offer cm where 1=1" + 
+                (filter.getModelId() != null ? " and  cm.model.id = :modelId" : "" )+
+                (filter.getManufacturerId() != null ? " and  cm.model.manufacturer.id = :manufacturerId" : "") +
+                (filter.getYearTo() != null ? " and  cm.year <= :yearTo" : "" )+
+                (filter.getYearFrom() != null ? " and  cm.year >= :yearFrom" : "") +
+                (filter.getFuelTypeId() != null ? " and  cm.fuelType.id = :fuelTypeId" : "") +
+                " order by cm.title";
         
-        String jpql = "select cm from Offer cm where cm.year >= :yearFrom and "
-                + "cm.year <= :yearTo and cm.fuelType.id = :fuelTypeId "
-                + " and cm.model.id = :model.id "
-                + "and cm.model.manufacturer.id = :manufacturer.id order by cm.name";
+//        String jpql = "select cm from Offer cm where cm.year >= :yearFrom and "
+//                + "cm.year <= :yearTo and cm.fuelType.id = :fuelTypeId "
+//                + " and cm.model.id = :modelId "
+//                + "and cm.model.manufacturer.id = :manufacturerId order by cm.title";
 
         TypedQuery<Offer> query = em.createQuery(jpql, Offer.class);
-        query.setParameter("yearTo", filter.getYearTo());
-        query.setParameter("yearFrom", filter.getYearFrom());
-        query.setParameter("fuelTypeId", filter.getFuelTypeIdl());
+        
+        if(filter.getModelId() !=null)
+            query.setParameter("modelId", filter.getModelId());
+        if(filter.getManufacturerId() !=null)
+            query.setParameter("manufacturerId", filter.getManufacturerId());
+        if(filter.getYearTo() !=null)
+            query.setParameter("yearTo", filter.getYearTo());
+        if(filter.getYearFrom() !=null)
+            query.setParameter("yearFrom", filter.getYearFrom());
+        if(filter.getFuelTypeId() !=null)
+            query.setParameter("fuelTypeId", filter.getFuelTypeId());
         
         return query.getResultList();
     }
@@ -141,6 +156,8 @@ public class OffersService {
         return offer;
     }
     
-    
+    public Offer saveOffer(Offer offer) {
+        return em.merge(offer);
+    }
    
 }

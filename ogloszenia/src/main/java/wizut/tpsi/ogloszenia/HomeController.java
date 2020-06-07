@@ -40,24 +40,27 @@ public class HomeController {
     public String home2(Model model, OfferFilter offerFilter) throws SQLException{    
         List<CarManufacturer> carManufacturers = offersService.getCarManufacturers();
         List<CarModel> carModels = new ArrayList<CarModel>();
+        List<FuelType> fuelTypes = offersService.getFuelTypes();
         //offersService.getCarModels();
 
-        List<Offer> offers;
+        List<Offer> offers = offersService.getOffers(offerFilter);
+        
         if(offerFilter.getModelId()!=null){
-            offers = offersService.getOffersByModel(offerFilter.getModelId());
+            //offers = offersService.getOffersByModel(offerFilter.getModelId());
             carModels = offersService.getCarModelsByManufacturer(offerFilter.getManufacturerId());
         }
         
         else if(offerFilter.getManufacturerId()!=null && offerFilter.getModelId()==null) {
-            offers = offersService.getOffersByManufacturer(offerFilter.getManufacturerId());
+           // offers = offersService.getOffersByManufacturer(offerFilter.getManufacturerId());
             carModels = offersService.getCarModelsByManufacturer(offerFilter.getManufacturerId());
         } else {
-            offers = offersService.getOffers();
+            //offers = offersService.getOffers();
         }
 
         model.addAttribute("carManufacturers", carManufacturers);
         model.addAttribute("carModels", carModels);
         model.addAttribute("offers", offers);
+        model.addAttribute("fuelTypes", fuelTypes);
         return "offersList";
     }
 
@@ -79,7 +82,9 @@ public class HomeController {
         model.addAttribute("carModels", carModels);
         model.addAttribute("bodyStyles", bodyStyles);
         model.addAttribute("fuelTypes", fuelTypes);
-
+        
+        model.addAttribute("header", "Nowe ogłoszenie");
+        model.addAttribute("action", "/newoffer");
         return "offerForm";
     }      
 
@@ -98,6 +103,8 @@ public class HomeController {
             return "offerForm";
         }
         offer = offersService.createOffer(offer);
+        model.addAttribute("header", "Nowe ogłoszenie");
+        model.addAttribute("action", "/newoffer");
 
         return "redirect:/offer/" + offer.getId();
     }
@@ -113,9 +120,42 @@ public class HomeController {
     
     @GetMapping("/editoffer/{id}")
     public String editOffer(Model model, @PathVariable("id") Integer id) {
+        model.addAttribute("header", "Edycja ogłoszenia");
+        model.addAttribute("action", "/editoffer/" + id);
+        Offer offer = offersService.getOffer(id);
+        model.addAttribute("offer", offer);
+        List<CarModel> carModels = offersService.getCarModels();
+        List<BodyStyle> bodyStyles = offersService.getBodyStyles();
+        List<FuelType> fuelTypes = offersService.getFuelTypes();
+
+        model.addAttribute("carModels", carModels);
+        model.addAttribute("bodyStyles", bodyStyles);
+        model.addAttribute("fuelTypes", fuelTypes);
         
         return "offerForm";
-}
+    }
     
+    @PostMapping("/editoffer/{id}")
+    public String saveEditedOffer(Model model, @PathVariable("id") Integer id, @Valid Offer offer, BindingResult binding) {
+        if(binding.hasErrors()) {
+        model.addAttribute("header", "Edycja ogłoszenia");
+        model.addAttribute("action", "/editoffer/" + id);
+
+        List<CarModel> carModels = offersService.getCarModels();
+        List<BodyStyle> bodyStyles = offersService.getBodyStyles();
+        List<FuelType> fuelTypes = offersService.getFuelTypes();
+
+        model.addAttribute("carModels", carModels);
+        model.addAttribute("bodyStyles", bodyStyles);
+        model.addAttribute("fuelTypes", fuelTypes);
+
+        return "offerForm";
+    }
+        
+        offersService.saveOffer(offer);
+
+        return "redirect:/offer/" + offer.getId();
+        
+    }
     
 }

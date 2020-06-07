@@ -52,17 +52,22 @@ public class Offer {
 
     @NotNull
     @Min(1990)
+    @Max(2022)
     @Column(name = "year")
     private Integer year;
 
     @NotNull
+    @Min(0)
     @Column(name = "mileage")
     private Integer mileage;
 
+    @NotNull
     @Min(0)
     @Column(name = "engine_size")
+    //private BigDecimal engineSize;
     private BigDecimal engineSize;
 
+    @NotNull
     @Min(0)
     @Column(name = "engine_power")
     private Integer enginePower;

@@ -8,7 +8,7 @@ public class OfferFilter {
     public Integer modelId;
     public Integer yearFrom;
     public Integer yearTo;
-    public Integer fuelTypeIdl;
+    public Integer fuelTypeId;
 
     
     public void setYearFrom(Integer yearFrom) {
@@ -19,8 +19,8 @@ public class OfferFilter {
         this.yearTo = yearTo;
     }
 
-    public void setFuelTypeIdl(Integer fuelTypeIdl) {
-        this.fuelTypeIdl = fuelTypeIdl;
+    public void setFuelTypeId(Integer fuelTypeId) {
+        this.fuelTypeId = fuelTypeId;
     }
 
     public Integer getYearFrom() {
@@ -31,8 +31,8 @@ public class OfferFilter {
         return yearTo;
     }
 
-    public Integer getFuelTypeIdl() {
-        return fuelTypeIdl;
+    public Integer getFuelTypeId() {
+        return fuelTypeId;
     }
 
     
