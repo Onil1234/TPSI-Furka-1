@@ -46,65 +46,65 @@ public class Offer {
     private Integer id;
 
     @NotNull
-    @Size(max = 255, min = 5)
+    @Size(max = 255, min = 5, message = "Minimum 5, max 255 znaków!")
     @Column(name = "title")
     private String title;
 
-    @NotNull
-    @Min(1990)
-    @Max(2022)
+    @NotNull(message = "Pole puste")
+    @Min(value = 1980, message = "Rok musi być wiższy niż {value}")
+    @Max(value = 2022, message = "Rok musi być niższy niż {value}")
     @Column(name = "year")
     private Integer year;
 
-    @NotNull
-    @Min(0)
+    @NotNull(message = "Pole puste")
+    @Min(value = 0, message = "Przebieg musi być dodatni!")
     @Column(name = "mileage")
     private Integer mileage;
 
-    @NotNull
-    @Min(0)
+    @NotNull(message = "Pole puste")
+    @Min(value = 0, message = "Pojemnosc musi byc dodatnia!")
     @Column(name = "engine_size")
     //private BigDecimal engineSize;
     private BigDecimal engineSize;
 
-    @NotNull
-    @Min(0)
+    @NotNull(message = "Pole puste")
+    @Min(value = 0, message = "Moc musi byc dodatnia!")
     @Column(name = "engine_power")
     private Integer enginePower;
 
-    @NotNull
-    @Min(1)
-    @Max(5)
+    @NotNull(message = "Pole puste")
+    @Min(value = 1, message = "Liczba drzwi musi być wieksza od {value}")
+    @Max(value = 5, message = "Liczba drzwi musi być mniejsza od {value}")
     @Column(name = "doors")
     private Integer doors;
 
-    @NotNull
-    @Size(max = 30, min = 3)
+    @NotNull(message = "Pole puste")
+    @Size(max = 30, min = 3, message = "Minimum 3 znaki!")
     @Column(name = "colour")
     private String colour;
 
-    @NotNull
+    @NotNull(message = "Pole puste")
     @Lob
-    @Size(max = 65535, min = 5 )
+    @Size(max = 65535, min = 5, message = " Minimum 5 znaków!")
     @Column(name = "description")
     private String description;
 
-    @NotNull
-    @Min(0)
+    @NotNull(message = "Pole puste")
+    @Min(value = 0, message = "Cena musi być dodatnia!")
     @Column(name = "price")
     private Integer price;
 
-    @NotNull
+    @NotNull(message = "Pole puste")
     @JoinColumn(name = "model_id", referencedColumnName = "id")
     @ManyToOne
     private CarModel model;
 
-    @NotNull
+    @NotNull(message = "Pole puste")
     @JoinColumn(name = "body_style_id", referencedColumnName = "id")
     @ManyToOne
     private BodyStyle bodyStyle;
 
-    @NotNull
+    @NotNull(message = "Pole puste")
     @JoinColumn(name = "fuel_type_id", referencedColumnName = "id")
     @ManyToOne
     private FuelType fuelType;
