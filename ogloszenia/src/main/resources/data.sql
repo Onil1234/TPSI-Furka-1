@@ -24,7 +24,7 @@ insert into car_model(name, manufacturer_id) values
 ('Seria 3', 12), ('Seria 5', 12), ('Seria 7', 12), ('X5', 12), ('Z3', 12), ('M5', 12);
 
 insert into fuel_type(name) values
-('Benzyna'), ('Diesel'), ('LPG'), ('CNG'), ('Wodór'), ('Hybrydowy'), ('Elektryczny');
+ ('Benzyna'), ('Diesel'), ('LPG'), ('CNG'), ('Wodór'), ('Hybrydowy'), ('Elektryczny');
 
 insert into body_style(name) values
 ('Hatchback'), ('Sedan'), ('Coupe'), ('Kombi'), ('SUV'), ('Pickup'), ('Kabriolet'), ('Terenowy');

@@ -121,13 +121,16 @@ public class OffersService {
     }
     
     public List<Offer> getOffers (OfferFilter filter){
-        String jpql = "select cm from Offer cm where 1=1" + 
+        String jpql = "select cm from Offer cm where 1=1" +
+                //(filter.getFuelTypeId() == 8 ? "" : "") +
                 (filter.getModelId() != null ? " and  cm.model.id = :modelId" : "" )+
                 (filter.getManufacturerId() != null ? " and  cm.model.manufacturer.id = :manufacturerId" : "") +
                 (filter.getYearTo() != null ? " and  cm.year <= :yearTo" : "" )+
                 (filter.getYearFrom() != null ? " and  cm.year >= :yearFrom" : "") +
-                (filter.getFuelTypeId() != null ? " and  cm.fuelType.id = :fuelTypeId" : "") +
+                (filter.getFuelTypeId() != null && filter.getFuelTypeId() != -1 ? " and  cm.fuelType.id = :fuelTypeId" : "") +
                 " order by cm.title";
+        
+        
         
 //        String jpql = "select cm from Offer cm where cm.year >= :yearFrom and "
 //                + "cm.year <= :yearTo and cm.fuelType.id = :fuelTypeId "
@@ -144,7 +147,7 @@ public class OffersService {
             query.setParameter("yearTo", filter.getYearTo());
         if(filter.getYearFrom() !=null)
             query.setParameter("yearFrom", filter.getYearFrom());
-        if(filter.getFuelTypeId() !=null)
+        if(filter.getFuelTypeId() !=null && filter.getFuelTypeId() != -1)
             query.setParameter("fuelTypeId", filter.getFuelTypeId());
         
         return query.getResultList();

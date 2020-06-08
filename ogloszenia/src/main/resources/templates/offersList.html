@@ -21,15 +21,16 @@
                         <select class="form-control" th:field="*{manufacturerId}">
                             <option th:each="manufacturer : ${carManufacturers}" th:value="${manufacturer.id}" th:text="${manufacturer.name}" ></option>
                         </select>
-                        <select class="form-control" th:field="*{modelId}">
+                        <select class="form-control" th:field="*{modelId}" >
                             <option th:each="model : ${carModels}" th:value="${model.id}" th:text="${model.name}" ></option>
                         </select>
-                        <input type="text" class="form-control" th:field="*{yearFrom}"/> 
-                        <input type="text" class="form-control" th:field="*{yearTo}" />
+                        <input type="text" class="form-control" th:field="*{yearFrom}" placeholder="Rok od"/> 
+                        <input type="text" class="form-control" th:field="*{yearTo}" placeholder="Rok do" />
                             
 
 
                         <select class="form-control" th:field="*{fuelTypeId}">
+                            <option th:text="Brak" value="-1"></option>
                             <option th:each="fuelType : ${fuelTypes}" th:value="${fuelType.id}" th:text="${fuelType.name}" ></option>
                             
                         </select>
