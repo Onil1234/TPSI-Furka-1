@@ -122,9 +122,8 @@ public class OffersService {
     
     public List<Offer> getOffers (OfferFilter filter){
         String jpql = "select cm from Offer cm where 1=1" +
-                //(filter.getFuelTypeId() == 8 ? "" : "") +
-                (filter.getModelId() != null ? " and  cm.model.id = :modelId" : "" )+
-                (filter.getManufacturerId() != null ? " and  cm.model.manufacturer.id = :manufacturerId" : "") +
+                (filter.getModelId() != null && filter.getModelId() !=-1 ? " and  cm.model.id = :modelId" : "" )+
+                (filter.getManufacturerId() != null && filter.getManufacturerId() != -1 ? " and  cm.model.manufacturer.id = :manufacturerId" : "") +
                 (filter.getYearTo() != null ? " and  cm.year <= :yearTo" : "" )+
                 (filter.getYearFrom() != null ? " and  cm.year >= :yearFrom" : "") +
                 (filter.getFuelTypeId() != null && filter.getFuelTypeId() != -1 ? " and  cm.fuelType.id = :fuelTypeId" : "") +
@@ -139,9 +138,9 @@ public class OffersService {
 
         TypedQuery<Offer> query = em.createQuery(jpql, Offer.class);
         
-        if(filter.getModelId() !=null)
+        if(filter.getModelId() !=null && filter.getModelId() !=-1)
             query.setParameter("modelId", filter.getModelId());
-        if(filter.getManufacturerId() !=null)
+        if(filter.getManufacturerId() !=null && filter.getManufacturerId() != -1)
             query.setParameter("manufacturerId", filter.getManufacturerId());
         if(filter.getYearTo() !=null)
             query.setParameter("yearTo", filter.getYearTo());

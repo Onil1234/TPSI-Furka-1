@@ -19,9 +19,11 @@
                 <div class="panel-body">
                     <form id="offerFilterForm" action="/offersList" method="get" class="form-inline" th:object="${offerFilter}">
                         <select class="form-control" th:field="*{manufacturerId}">
+                            <option th:text="Wszystkie" value="-1"></option>
                             <option th:each="manufacturer : ${carManufacturers}" th:value="${manufacturer.id}" th:text="${manufacturer.name}" ></option>
                         </select>
                         <select class="form-control" th:field="*{modelId}" >
+                            <option th:text="Wszystkie" value="-1"></option>
                             <option th:each="model : ${carModels}" th:value="${model.id}" th:text="${model.name}" ></option>
                         </select>
                         <input type="text" class="form-control" th:field="*{yearFrom}" placeholder="Rok od"/> 
